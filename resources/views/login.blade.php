@@ -1,4 +1,10 @@
 @include('backend.layout.header-script')
+<style>
+    .is-invalid {
+    border-color: #dc3545; /* Red color for invalid input */
+}
+
+</style>
 <div class="container-fluid">
     <div class="row pt-5">
         <div class="col-4"></div>
@@ -37,7 +43,7 @@
                         <form action="{{ route('user.login') }}" method="post">
                             @csrf
                             <div class="input-group mb-3">
-                                <input type="email" name="email" class="form-control" placeholder="Email" required>
+                                <input type="email" id="email" name="email" class="form-control @error('email') is-invalid @enderror" placeholder="Email" required>
                                 <div class="input-group-append">
                                     <div class="input-group-text">
                                         <span class="fas fa-envelope"></span>
@@ -45,20 +51,21 @@
                                 </div>
                             </div>
                             @error('email')
-                                <p>{{ $message }}</p>
+                                <p class="text-danger">{{ $message }}</p>
                             @enderror
+
                             <div class="input-group mb-3">
-                                <input type="password" name="password" class="form-control" placeholder="Password"
-                                    required>
+                                <input type="password" id="password" name="password" class="form-control @error('password') is-invalid @enderror" placeholder="Password" required>
                                 <div class="input-group-append">
-                                    <div class="input-group-text">
-                                        <span class="fas fa-lock"></span>
+                                    <div class="input-group-text " >
+                                        <span class="fas fa-lock  @error('password') is-invalid @enderror"></span>
                                     </div>
                                 </div>
                             </div>
                             @error('password')
-                                <p>{{ $message }}</p>
+                                <p class="text-danger">{{ $message }}</p>
                             @enderror
+
                             <div class="row">
                                 <div class="col-8">
 
@@ -98,3 +105,78 @@
     </div>
 </div>
 @include('backend.layout.footer-script')
+<script>
+//   document.addEventListener('DOMContentLoaded', function() {
+//     const emailInput = document.getElementById('email');
+//     const passwordInput = document.getElementById('password');
+
+//     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Basic email pattern
+
+//     emailInput.addEventListener('input', function() {
+//         if (emailInput.value.length === 0 || emailRegex.test(emailInput.value)) {
+//             emailInput.style.borderColor = '#50C878'; // Reset border color for valid input or empty field
+//         } else {
+//             emailInput.style.borderColor = '#dc3545'; // Red border for invalid email
+//         }
+//     });
+
+//     passwordInput.addEventListener('input', function() {
+//         if (passwordInput.value.length >= 8) {
+//             passwordInput.style.borderColor = '#50C878'; // Reset border color for valid input
+//         } else {
+//             passwordInput.style.borderColor = '#dc3545'; // Red border for invalid input
+//         }
+//     });
+// });
+
+
+
+document.addEventListener('DOMContentLoaded', function() {
+    const emailInput = document.getElementById('email');
+    const passwordInput = document.getElementById('password');
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Basic email pattern
+
+    // Handle email input on focus
+    emailInput.addEventListener('focus', function() {
+        emailInput.style.borderColor = ''; // Clear the border color on focus
+    });
+
+    // Handle email input on typing
+    emailInput.addEventListener('input', function() {
+        if (emailInput.value.length === 0 || emailRegex.test(emailInput.value)) {
+            emailInput.style.borderColor = '#50C878'; // Green border for valid input or empty field
+        } else {
+            emailInput.style.borderColor = '#dc3545'; // Red border for invalid email
+        }
+    });
+
+    // Handle password input on focus
+    passwordInput.addEventListener('focus', function() {
+        passwordInput.style.borderColor = ''; // Clear the border color on focus
+    });
+
+    // Handle password input on typing
+    passwordInput.addEventListener('input', function() {
+        if (passwordInput.value.length >= 8) {
+            passwordInput.style.borderColor = '#50C878'; // Green border for valid input
+        } else {
+            passwordInput.style.borderColor = '#dc3545'; // Red border for invalid input
+        }
+    });
+
+    // Optionally reset border color when the input loses focus and is empty
+    emailInput.addEventListener('blur', function() {
+        if (emailInput.value.length === 0) {
+            emailInput.style.borderColor = ''; // Reset border color if input is empty
+        }
+    });
+
+    passwordInput.addEventListener('blur', function() {
+        if (passwordInput.value.length === 0) {
+            passwordInput.style.borderColor = ''; // Reset border color if input is empty
+        }
+    });
+});
+
+</script>
